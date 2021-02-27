@@ -1,0 +1,1 @@
+export const PLAYER_SIGN = {X: 'x', O: 'o'};
