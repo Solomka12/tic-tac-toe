@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import classNames from 'classnames';
 import {set} from 'lodash';
 
 import Board from './Board';
@@ -100,16 +101,6 @@ export default function Game() {
         if (row) setWinnerRow(row);
     }, [board]);
 
-    useEffect(() => {
-        if (winnerRow) {
-            setTimeout(() => {
-                const mark = board[winnerRow[0]];
-                alert(`${mark.toUpperCase()}s win!`);
-                reset();
-            }, 100);
-        }
-    }, [winnerRow]);
-
     const initGame = () => {
         reset();
     };
@@ -151,17 +142,28 @@ export default function Game() {
 
     return (
         <div className="game">
-            <div className="info-panel">
-                <span className="info-content">
-                    <img src={currentPlayer === PLAYER_SIGN.X ? xIcon : oIcon} alt={currentPlayer}/>
-                    's move
-                </span>
+            <div className={classNames('info-panel', `${currentPlayer}-move`)} >
+                <span className="panel-x-block"><img src={xIcon} alt="x"/></span>
+                {winnerRow ?
+                    <span className="info-content">
+                        <img src={board[winnerRow[0]] === PLAYER_SIGN.X ? xIcon : oIcon} alt={currentPlayer}/>
+                        's win!
+                    </span>
+                    :
+                    <span className="info-content">
+                        <img src={currentPlayer === PLAYER_SIGN.X ? xIcon : oIcon} alt={currentPlayer}/>
+                        's move
+                    </span>
+                }
+                <span className="panel-o-block"><img src={oIcon} alt="o"/></span>
             </div>
+
             <Board
                 cells={board}
                 boardSize={boardSize}
                 winnerRow={winnerRow}
                 handleCellSet={handleCellSet}
+                reset={reset}
             />
         </div>
     );

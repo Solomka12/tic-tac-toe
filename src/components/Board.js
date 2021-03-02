@@ -8,11 +8,10 @@ import {PLAYER_SIGN} from "../constants";
 import oIcon from '../assets/icons/o_icon.svg';
 import xIcon from '../assets/icons/x_icon.svg';
 
-export default function Board({cells, handleCellSet, boardSize, winnerRow}) {
+export default function Board({cells, handleCellSet, boardSize, winnerRow, reset}) {
     const [hoveredCell, setHoveredCell] = useState(null);
 
     useEffect(() => {
-        console.log(hoveredCell);
         if (hoveredCell !== null) vibrate(15);
     }, [hoveredCell]);
 
@@ -58,14 +57,19 @@ export default function Board({cells, handleCellSet, boardSize, winnerRow}) {
     }
 
     return (
-        <table
-            className="board"
-            onClick={handleBoardClick}
-            onTouchStart={onTouchMove}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-        >
-            <tbody>
+        <div className={classNames('board-wrapper', {ended: Boolean(winnerRow)})}>
+            <div className="reset-block" onClick={reset}>
+                <span className="win-caption">Click to play</span>
+            </div>
+
+            <table
+                className="board"
+                onClick={handleBoardClick}
+                onTouchStart={onTouchMove}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+            >
+                <tbody>
                 {getSplitArr(cells, boardSize).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                         {row.map((cell, cellIndex) => (
@@ -81,7 +85,8 @@ export default function Board({cells, handleCellSet, boardSize, winnerRow}) {
                         ))}
                     </tr>
                 ))}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     );
 }
