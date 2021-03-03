@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import classNames from 'classnames';
 import {set} from 'lodash';
 
 import Board from './Board';
+import StatusPanel from './StatusPanel';
 import {PLAYER_SIGN} from '../constants';
-
-import oIcon from '../assets/icons/o_icon.svg';
-import xIcon from '../assets/icons/x_icon.svg';
 
 const boardSize = 10;
 const marksToWin = 5;
@@ -90,6 +87,7 @@ const getDiagonalRTLRow = (i, cell, board = []) => {
 export default function Game() {
     const [board, setBoard] = useState([]);
     const [winnerRow, setWinnerRow] = useState(null);
+    const [winnerSign, setWinnerSign] = useState(null);
     const [currentPlayer, setCurrentPlayer] = useState(null);
 
     useEffect(() => {
@@ -100,6 +98,10 @@ export default function Game() {
         const row = getWinnerRow();
         if (row) setWinnerRow(row);
     }, [board]);
+
+    useEffect(() => {
+        if (winnerRow) setWinnerSign(board[winnerRow[0]]);
+    }, [winnerRow]);
 
     const initGame = () => {
         reset();
@@ -142,21 +144,10 @@ export default function Game() {
 
     return (
         <div className="game">
-            <div className={classNames('info-panel', `${currentPlayer}-move`)} >
-                <span className="panel-x-block"><img src={xIcon} alt="x"/></span>
-                {winnerRow ?
-                    <span className="info-content">
-                        <img src={board[winnerRow[0]] === PLAYER_SIGN.X ? xIcon : oIcon} alt={currentPlayer}/>
-                        's win!
-                    </span>
-                    :
-                    <span className="info-content">
-                        <img src={currentPlayer === PLAYER_SIGN.X ? xIcon : oIcon} alt={currentPlayer}/>
-                        's move
-                    </span>
-                }
-                <span className="panel-o-block"><img src={oIcon} alt="o"/></span>
-            </div>
+            <StatusPanel
+                currentPlayer={currentPlayer}
+                winnerSign={winnerRow}
+            />
 
             <Board
                 cells={board}
