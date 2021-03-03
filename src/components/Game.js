@@ -111,6 +111,7 @@ export default function Game() {
         setCurrentPlayer(PLAYER_SIGN.X);
         setBoard(new Array(boardSize * boardSize).fill(null));
         setWinnerRow(null);
+        setWinnerSign(null);
     };
 
     const handleCellSet = index => {
@@ -146,7 +147,7 @@ export default function Game() {
         <div className="game">
             <StatusPanel
                 currentPlayer={currentPlayer}
-                winnerSign={winnerRow}
+                winnerSign={winnerSign}
             />
 
             <Board
