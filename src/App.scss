@@ -92,7 +92,9 @@ body {
   }
 
   &.victorious {
-    background-color: #ffe180;
+    position: relative;
+    z-index: 1;
+    animation: bounce 2s infinite;
   }
 }
 
@@ -136,9 +138,6 @@ body {
 @media (hover: none) {
   .cell {
     &:not(.victorious).hovered {
-      height: 100% !important;
-      width: 100%;
-      display: flex;
       position: relative;
       transform: scale(1.15);
       box-shadow: 0 0 4px rgba(0,0,0,.6);
@@ -153,13 +152,17 @@ body {
 @media (hover: hover) {
   .cell {
     &:not(.victorious):hover {
-      height: 100% !important;
-      width: 100%;
-      display: flex;
       position: relative;
       transform: scale(1.15);
       box-shadow: 0 0 4px rgba(0,0,0,.6);
       z-index: 1;
     }
   }
+}
+
+@keyframes bounce {
+  0%   {transform: scale(1)}
+  10%  {transform: scale(1.2)}
+  20%  {transform: scale(1)}
+  100% {transform: scale(1)}
 }

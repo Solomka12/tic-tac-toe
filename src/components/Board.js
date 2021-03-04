@@ -43,7 +43,7 @@ export default function Board({cells, handleCellSet, boardSize, winnerRow, reset
             vibrate(25);
         }
         setHoveredCell(null);
-    }
+    };
 
     const getCellClassNames = index => {
         const sameRow = Math.floor(index / boardSize) === Math.floor(hoveredCell / boardSize);
@@ -54,7 +54,20 @@ export default function Board({cells, handleCellSet, boardSize, winnerRow, reset
             highlighted: Number.isInteger(hoveredCell) && (sameRow || sameColumn),
             victorious: winnerRow?.includes(index),
         };
-    }
+    };
+
+    const getCellStyle = index => {
+        const styles = {height: `${100 / boardSize}%`, width: `${100 / boardSize}%`};
+
+        if (winnerRow) {
+            const winIndex = winnerRow.findIndex(i => i === index);
+            if (winIndex >= 0) styles.animationDelay = `${winIndex * (1 / boardSize)}s`;
+        }
+
+        return styles;
+    };
+
+    const getBoardIndex = (rowIndex, cellIndex) => rowIndex * boardSize + cellIndex;
 
     return (
         <div className={classNames('board-wrapper', {ended: Boolean(winnerRow)})}>
@@ -75,10 +88,10 @@ export default function Board({cells, handleCellSet, boardSize, winnerRow, reset
                         {row.map((cell, cellIndex) => (
                             <td
                                 key={cellIndex}
-                                style={{height: `${100 / boardSize}%`}}
-                                data-key={rowIndex * boardSize + cellIndex}
+                                style={getCellStyle(getBoardIndex(rowIndex, cellIndex))}
+                                data-key={getBoardIndex(rowIndex, cellIndex)}
                                 data-value={cell || 'empty'}
-                                className={classNames('cell', getCellClassNames(rowIndex * boardSize + cellIndex))}
+                                className={classNames('cell', getCellClassNames(getBoardIndex(rowIndex, cellIndex)))}
                             >
                                 {cell ? <img src={cell === PLAYER_SIGN.X ? xIcon : oIcon} alt={cell}/> : null}
                             </td>
