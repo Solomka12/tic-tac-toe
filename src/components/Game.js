@@ -84,11 +84,14 @@ const getDiagonalRTLRow = (i, cell, board = []) => {
     return currWinnerRow.length >= marksToWin ? currWinnerRow : null;
 };
 
+const initialScore = {[PLAYER_SIGN.X]: 0, [PLAYER_SIGN.O]: 0}
+
 export default function Game() {
     const [board, setBoard] = useState([]);
     const [winnerRow, setWinnerRow] = useState(null);
     const [winnerSign, setWinnerSign] = useState(null);
     const [currentPlayer, setCurrentPlayer] = useState(null);
+    const [score, setScore] = useState(initialScore);
 
     useEffect(() => {
         initGame();
@@ -100,7 +103,11 @@ export default function Game() {
     }, [board]);
 
     useEffect(() => {
-        if (winnerRow) setWinnerSign(board[winnerRow[0]]);
+        if (winnerRow) {
+            const sign = board[winnerRow[0]];
+            setWinnerSign(sign);
+            setScore(prev => ({...prev, [sign]: prev[sign] + 1}))
+        }
     }, [winnerRow]);
 
     const initGame = () => {
@@ -146,6 +153,7 @@ export default function Game() {
     return (
         <div className="game">
             <StatusPanel
+                score={score}
                 currentPlayer={currentPlayer}
                 winnerSign={winnerSign}
             />
