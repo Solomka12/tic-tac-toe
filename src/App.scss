@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Roboto+Mono&display=swap');
 
 * {
   box-sizing: border-box;
@@ -10,7 +10,7 @@ html, body {
 }
 
 body {
-  font-family: 'Comfortaa', 'Arial', sans-serif;
+  font-family: 'Comfortaa', sans-serif;
 }
 
 #root {
@@ -109,7 +109,6 @@ body {
     display: flex;
     align-items: flex-end;
     font-size: 2.6em;
-    font-family: monospace;
 
     > img {
       width: 1.2em;
@@ -117,15 +116,17 @@ body {
     }
   }
 
-  .panel-x-block > img {
-    opacity: 0.4;
-    margin-left: 0.2em;
-    transform-origin: left center;
+  .panel-x-block, .panel-o-block {
+    font-family: 'Roboto Mono', monospace;
+
+    > img {
+      opacity: 0.4;
+      margin-left: 0.2em;
+      transform-origin: left center;
+    }
   }
 
   .panel-o-block > img {
-    opacity: 0.4;
-    margin-right: 0.2em;
     transform-origin: right center;
   }
 
