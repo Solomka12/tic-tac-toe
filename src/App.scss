@@ -51,6 +51,7 @@ body {
     margin: 0;
     flex-wrap: wrap;
     border-spacing: 0;
+    border-collapse: collapse;
     touch-action: none;
   }
 
@@ -127,6 +128,8 @@ body {
   }
 
   .panel-o-block > img {
+    margin-left: 0;
+    margin-right: 0.2em;
     transform-origin: right center;
   }
 
