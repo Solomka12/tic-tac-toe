@@ -1,18 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {set} from 'lodash';
 
-import Board from './Board';
-import StatusPanel from './StatusPanel';
-
+import {useAppState} from '../contexts/AppStateContext';
 import {getWinnerRow} from '../utils';
 import {PLAYER_SIGN} from '../constants';
 
-const boardSize = 10;
-const marksToWin = 5;
+import Board from './Board';
+import StatusPanel from './StatusPanel';
 
 const initialScore = {[PLAYER_SIGN.X]: 0, [PLAYER_SIGN.O]: 0}
 
 export default function Game() {
+    const {boardSize, marksToWin} = useAppState();
     const [board, setBoard] = useState([]);
     const [winnerRow, setWinnerRow] = useState(null);
     const [winnerSign, setWinnerSign] = useState(null);
