@@ -16,8 +16,13 @@ export default function StatusPanel({score, currentPlayer, winnerSign}) {
                 <img src={xIcon} alt="x"/>
             </span>
             <span className="info-content">
-                <img src={getSignIcon(winnerSign || currentPlayer)} alt={winnerSign || currentPlayer}/>
-                {winnerSign ? '\'s win!' : '\'s move'}
+                {winnerSign === 'draw'
+                    ? 'Draw!'
+                    : <>
+                        <img src={getSignIcon(winnerSign || currentPlayer)} alt={winnerSign || currentPlayer}/>
+                        {winnerSign ? '\'s win!' : '\'s move'}
+                    </>
+                }
             </span>
             <span className="panel-o-block">
                 <img src={oIcon} alt="o"/>
