@@ -1,53 +1,67 @@
-import classNames from 'classnames';
+import {Slider, Tabs, Tab} from '@material-ui/core';
 
 import {useAppState, useAppActions} from '../contexts/AppStateContext';
-import {PLAYER_SIGN, BOARD_SIZE} from "../constants";
+import {BOARD_SIZE} from "../constants";
 
-import oIcon from '../assets/icons/o_icon.svg';
-import xIcon from '../assets/icons/x_icon.svg';
+import { ReactComponent as XIcon } from '../assets/icons/x_icon.svg';
+import { ReactComponent as OIcon } from '../assets/icons/o_icon.svg';
 
-export default function Menu({score, currentPlayer, winnerSign}) {
-    const {boardSize, marksToWin} = useAppState();
-    const {setBoardSize, setMarksToWin, setIsStarted} = useAppActions();
+export default function Menu() {
+    const {boardSize, marksToWin, moveChangeVariant} = useAppState();
+    const {setBoardSize, setMarksToWin, setIsStarted, setMoveChangeVariant} = useAppActions();
 
-    const onBoardSizeChange = e => {
-        setBoardSize(+e.target.value);
-        setMarksToWin(Math.min(+e.target.value, marksToWin));
+    const onBoardSizeChange = (e, value) => {
+        setBoardSize(value);
+        setMarksToWin(Math.min(value, marksToWin));
     }
 
-    const onMarksToWinChange = e => setMarksToWin(+e.target.value);
+    const onMarksToWinChange = (e, value) => setMarksToWin(value);
+
+    const onTabChange = (e, value) => setMoveChangeVariant(value);
 
     return (
         <div className="menu">
-            <div className="menu-items">
-                <button onClick={() => setIsStarted(true)} className="menu-item">Play</button>
-            </div>
             <div className="game-configs">
                 <div className="config-item">
                     <span className="config-item-label">Board size: {boardSize}</span>
                     <br/>
-                    <input
-                        type="range"
+                    <Slider
                         value={boardSize}
                         max={BOARD_SIZE.MAX}
                         min={BOARD_SIZE.MIN}
-                        className="config-item-control"
                         onChange={onBoardSizeChange}
+                        className="config-item-control"
                     />
                 </div>
 
                 <div className="config-item">
                     <span className="config-item-label">Marks to win: {marksToWin}</span>
                     <br/>
-                    <input
-                        type="range"
+                    <Slider
                         value={marksToWin}
                         max={boardSize}
                         min={BOARD_SIZE.MIN}
-                        className="config-item-control"
                         onChange={onMarksToWinChange}
+                        className="config-item-control"
                     />
                 </div>
+
+                <Tabs
+                    value={moveChangeVariant}
+                    onChange={onTabChange}
+                    variant="fullWidth"
+                    indicatorColor="primary"
+                    textColor="primary"
+                    className="config-item"
+                >
+                    <Tab className="menu-tab" icon={<span className="tab-icon"><XIcon /></span>} label="first" />
+                    <Tab className="menu-tab" icon={<span className="tab-icon"><XIcon /><OIcon /></span>} label="switch" />
+                    <Tab className="menu-tab" icon={<span className="tab-icon"><OIcon /></span>} label="first" />
+                </Tabs>
+            </div>
+
+            <div className="menu-items">
+                <button onClick={() => setIsStarted(true)} className="menu-item">Play</button>
             </div>
         </div>
     );

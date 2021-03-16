@@ -11,11 +11,12 @@ import StatusPanel from './StatusPanel';
 const initialScore = {[PLAYER_SIGN.X]: 0, [PLAYER_SIGN.O]: 0}
 
 export default function Game() {
-    const {boardSize, marksToWin} = useAppState();
+    const {boardSize, marksToWin, moveChangeVariant} = useAppState();
     const [board, setBoard] = useState([]);
     const [winnerRow, setWinnerRow] = useState(null);
     const [winnerSign, setWinnerSign] = useState(null);
     const [currentPlayer, setCurrentPlayer] = useState(null);
+    const [startPlayerSign, setStartPlayerSign] = useState(moveChangeVariant === 2 ? PLAYER_SIGN.O : PLAYER_SIGN.X);
     const [score, setScore] = useState(initialScore);
 
     useEffect(() => {
@@ -25,13 +26,19 @@ export default function Game() {
     useEffect(() => {
         const row = getWinnerRow(board, boardSize, marksToWin);
         if (row) setWinnerRow(row);
-    }, [board]);
+    }, [board, boardSize, marksToWin]);
 
     useEffect(() => {
         if (winnerRow) {
             const sign = board[winnerRow[0]];
             setWinnerSign(sign);
-            setScore(prev => ({...prev, [sign]: prev[sign] + 1}))
+            setScore(prev => ({...prev, [sign]: prev[sign] + 1}));
+            switch (moveChangeVariant) {
+                case 1: setStartPlayerSign(startPlayerSign === PLAYER_SIGN.X ? PLAYER_SIGN.O : PLAYER_SIGN.X); break;
+                case 2: setStartPlayerSign(PLAYER_SIGN.O); break;
+                case 0:
+                default: setStartPlayerSign(PLAYER_SIGN.X);
+            }
         }
     }, [winnerRow]);
 
@@ -40,7 +47,7 @@ export default function Game() {
     };
 
     const reset = () => {
-        setCurrentPlayer(PLAYER_SIGN.X);
+        setCurrentPlayer(startPlayerSign);
         setBoard(new Array(boardSize * boardSize).fill(null));
         setWinnerRow(null);
         setWinnerSign(null);

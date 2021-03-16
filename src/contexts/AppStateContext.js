@@ -6,7 +6,8 @@ import { generateContextHook } from '../utils/contextHelpers';
 const initialState = {
     isStarted: false,
     boardSize: 10,
-    marksToWin: 5
+    marksToWin: 5,
+    moveChangeVariant: 1,
 };
 
 const AppStateContext = createContext();
@@ -21,6 +22,7 @@ const AppProvider = ({children}) => {
         setIsStarted: setByField('isStarted'),
         setBoardSize: setByField('boardSize'),
         setMarksToWin: setByField('marksToWin'),
+        setMoveChangeVariant: setByField('moveChangeVariant'),
     };
 
     return (
