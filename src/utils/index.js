@@ -1,3 +1,5 @@
+import confetti from 'canvas-confetti';
+
 export const getSplitArr = (arr, gridCount = 10) => {
     return new Array(Math.ceil(arr.length / gridCount))
         .fill(null)
@@ -98,4 +100,44 @@ export const getWinnerRow = (board, boardSize, marksToWin) => {
             if (diagonalRTLRow) return diagonalRTLRow;
         }
     }
+};
+
+export const fireConfetti = (angle = 90, {x = 0.5, y = 0.5}) => {
+    const defaults = {angle, ticks: 400, origin: {x, y}};
+
+    confetti({
+        ...defaults,
+        particleCount: 40,
+        spread: 26,
+        startVelocity: 55,
+    });
+    confetti({
+        ...defaults,
+        particleCount: 30,
+        spread: 60,
+        gravity: 0.8
+    });
+    confetti({
+        ...defaults,
+        particleCount: 50,
+        spread: 100,
+        decay: 0.91,
+        scalar: 0.8,
+        gravity: 1.1
+    });
+    confetti({
+        ...defaults,
+        particleCount: 15,
+        spread: 120,
+        startVelocity: 25,
+        decay: 0.92,
+        scalar: 1.2,
+        gravity: 0.9
+    });
+    confetti({
+        ...defaults,
+        particleCount: 15,
+        spread: 120,
+        startVelocity: 45,
+    });
 };

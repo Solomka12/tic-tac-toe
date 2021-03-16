@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.3",
+    "canvas-confetti": "^1.4.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "node-sass": "^5.0.0",

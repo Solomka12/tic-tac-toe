@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {set} from 'lodash';
 
 import {useAppState} from '../contexts/AppStateContext';
-import {getWinnerRow} from '../utils';
+import {getWinnerRow, fireConfetti} from '../utils';
 import {PLAYER_SIGN} from '../constants';
 
 import Board from './Board';
@@ -20,7 +20,7 @@ export default function Game() {
     const [score, setScore] = useState(initialScore);
 
     useEffect(() => {
-        initGame();
+        reset();
     }, []);
 
     useEffect(() => {
@@ -39,12 +39,10 @@ export default function Game() {
                 case 0:
                 default: setStartPlayerSign(PLAYER_SIGN.X);
             }
+            fireConfetti(120, {y: 0.8, x: 1});
+            fireConfetti(60, {y: 0.8, x: 0});
         }
     }, [winnerRow]);
-
-    const initGame = () => {
-        reset();
-    };
 
     const reset = () => {
         setCurrentPlayer(startPlayerSign);
