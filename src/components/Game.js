@@ -30,17 +30,17 @@ export default function Game() {
 
     useEffect(() => {
         if (winnerRow) {
-            const sign = board[winnerRow[0]];
-            setWinnerSign(sign);
-            setScore(prev => ({...prev, [sign]: prev[sign] + 1}));
-            switch (moveChangeVariant) {
-                case 1: setStartPlayerSign(startPlayerSign === PLAYER_SIGN.X ? PLAYER_SIGN.O : PLAYER_SIGN.X); break;
-                case 2: setStartPlayerSign(PLAYER_SIGN.O); break;
-                case 0:
-                default: setStartPlayerSign(PLAYER_SIGN.X);
+            if (winnerRow.length) {
+                const sign = board[winnerRow[0]];
+                setWinnerSign(sign);
+                setScore(prev => ({...prev, [sign]: prev[sign] + 1}));
+                fireConfetti(120, {y: 0.8, x: 1});
+                fireConfetti(60, {y: 0.8, x: 0});
+            } else {
+                setWinnerSign('draw');
             }
-            fireConfetti(120, {y: 0.8, x: 1});
-            fireConfetti(60, {y: 0.8, x: 0});
+
+            switchFirstPlayer();
         }
     }, [winnerRow]);
 
@@ -58,6 +58,15 @@ export default function Game() {
 
     const togglePlayer = () => {
         setCurrentPlayer(p => p === PLAYER_SIGN.X ? PLAYER_SIGN.O : PLAYER_SIGN.X);
+    };
+
+    const switchFirstPlayer = () => {
+        switch (moveChangeVariant) {
+            case 1: setStartPlayerSign(startPlayerSign === PLAYER_SIGN.X ? PLAYER_SIGN.O : PLAYER_SIGN.X); break;
+            case 2: setStartPlayerSign(PLAYER_SIGN.O); break;
+            case 0:
+            default: setStartPlayerSign(PLAYER_SIGN.X);
+        }
     };
 
     return (
