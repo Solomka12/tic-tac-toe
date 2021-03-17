@@ -83,12 +83,14 @@ export const getWinnerRow = (board, boardSize, marksToWin) => {
         return currWinnerRow.length >= marksToWin ? currWinnerRow : null;
     };
 
-    let isEmptyCell = false;
+    let emptyCellCount = board.length;
 
     for (let i = 0; i < board.length; i++) {
         const cell = board[i];
 
         if (cell) {
+            emptyCellCount--;
+
             const horizontalRow = getHorizontalRow(i, cell, board);
             if (horizontalRow) return horizontalRow;
 
@@ -100,12 +102,10 @@ export const getWinnerRow = (board, boardSize, marksToWin) => {
 
             const diagonalRTLRow = getDiagonalRTLRow(i, cell, board);
             if (diagonalRTLRow) return diagonalRTLRow;
-        } else {
-            isEmptyCell = true;
         }
     }
 
-    if (!isEmptyCell) return [];
+    if (board.length && emptyCellCount <= 0) return [];
 };
 
 export const fireConfetti = (angle = 90, {x = 0.5, y = 0.5}) => {
