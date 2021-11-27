@@ -36,7 +36,7 @@
     margin: 0;
     flex-wrap: wrap;
     border-spacing: 0;
-    border-collapse: collapse;
+    //border-collapse: collapse;
     touch-action: none;
   }
 
@@ -69,7 +69,7 @@
   align-items: center;
   background-color: #fff;
   transition: transform .2s ease, box-shadow .2s ease;
-  will-change: transform, box-shadow;
+  //will-change: transform, box-shadow;
   user-select: none;
 
   > img {
