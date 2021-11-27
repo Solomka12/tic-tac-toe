@@ -1,4 +1,4 @@
-import {Slider, Tabs, Tab} from '@material-ui/core';
+import {Button, Slider, Tabs, Tab} from '@mui/material';
 
 import {useAppState, useAppActions} from '../contexts/AppStateContext';
 import {BOARD_SIZE} from "../constants";
@@ -61,7 +61,7 @@ export default function Menu() {
             </div>
 
             <div className="menu-items">
-                <button onClick={() => setIsStarted(true)} className="menu-item">Play</button>
+                <Button onClick={() => setIsStarted(true)} className="menu-btn" size="large" variant="outlined">Play</Button>
             </div>
         </div>
     );
