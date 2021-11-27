@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/tic-tac-toe/static/css/main.bee42a91.chunk.css",
-    "main.js": "/tic-tac-toe/static/js/main.be41e455.chunk.js",
-    "main.js.map": "/tic-tac-toe/static/js/main.be41e455.chunk.js.map",
-    "runtime-main.js": "/tic-tac-toe/static/js/runtime-main.8707c8fa.js",
-    "runtime-main.js.map": "/tic-tac-toe/static/js/runtime-main.8707c8fa.js.map",
-    "static/js/2.c931db63.chunk.js": "/tic-tac-toe/static/js/2.c931db63.chunk.js",
-    "static/js/2.c931db63.chunk.js.map": "/tic-tac-toe/static/js/2.c931db63.chunk.js.map",
-    "static/js/3.7c216a85.chunk.js": "/tic-tac-toe/static/js/3.7c216a85.chunk.js",
-    "static/js/3.7c216a85.chunk.js.map": "/tic-tac-toe/static/js/3.7c216a85.chunk.js.map",
+    "main.css": "/tic-tac-toe/static/css/main.23b95b7f.chunk.css",
+    "main.js": "/tic-tac-toe/static/js/main.f87b0197.chunk.js",
+    "main.js.map": "/tic-tac-toe/static/js/main.f87b0197.chunk.js.map",
+    "runtime-main.js": "/tic-tac-toe/static/js/runtime-main.e6f60275.js",
+    "runtime-main.js.map": "/tic-tac-toe/static/js/runtime-main.e6f60275.js.map",
+    "static/js/2.d2d50927.chunk.js": "/tic-tac-toe/static/js/2.d2d50927.chunk.js",
+    "static/js/2.d2d50927.chunk.js.map": "/tic-tac-toe/static/js/2.d2d50927.chunk.js.map",
+    "static/js/3.76db469e.chunk.js": "/tic-tac-toe/static/js/3.76db469e.chunk.js",
+    "static/js/3.76db469e.chunk.js.map": "/tic-tac-toe/static/js/3.76db469e.chunk.js.map",
     "index.html": "/tic-tac-toe/index.html",
-    "static/css/main.bee42a91.chunk.css.map": "/tic-tac-toe/static/css/main.bee42a91.chunk.css.map",
-    "static/js/2.c931db63.chunk.js.LICENSE.txt": "/tic-tac-toe/static/js/2.c931db63.chunk.js.LICENSE.txt",
+    "static/css/main.23b95b7f.chunk.css.map": "/tic-tac-toe/static/css/main.23b95b7f.chunk.css.map",
+    "static/js/2.d2d50927.chunk.js.LICENSE.txt": "/tic-tac-toe/static/js/2.d2d50927.chunk.js.LICENSE.txt",
     "static/media/o_icon.1a6f55bb.svg": "/tic-tac-toe/static/media/o_icon.1a6f55bb.svg",
     "static/media/x_icon.970deedc.svg": "/tic-tac-toe/static/media/x_icon.970deedc.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.8707c8fa.js",
-    "static/js/2.c931db63.chunk.js",
-    "static/css/main.bee42a91.chunk.css",
-    "static/js/main.be41e455.chunk.js"
+    "static/js/runtime-main.e6f60275.js",
+    "static/js/2.d2d50927.chunk.js",
+    "static/css/main.23b95b7f.chunk.css",
+    "static/js/main.f87b0197.chunk.js"
   ]
 }
