@@ -1,8 +1,7 @@
 import React from 'react';
-
-import { useAppState, useAppActions } from '@/contexts/AppStateContext';
+import useAppStore from '@/state/appStore';
+import useGameConfigStore from '@/state/gameConfigStore';
 import { BOARD_SIZE } from '@/constants';
-
 import XIcon from '@/assets/icons/x_icon.svg?react';
 import OIcon from '@/assets/icons/o_icon.svg?react';
 import { Button } from './ui/button';
@@ -11,8 +10,8 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
 
 const Menu: React.FC = () => {
-  const { boardSize, marksToWin, moveChangeVariant } = useAppState();
-  const { setBoardSize, setMarksToWin, setIsStarted, setMoveChangeVariant } = useAppActions();
+  const { boardSize, marksToWin, moveChangeVariant, setBoardSize, setMarksToWin, setMoveChangeVariant } = useGameConfigStore();
+  const { setIsStarted } = useAppStore();
 
   const onBoardSizeChange = ([value]: number[]) => {
     setBoardSize(value);

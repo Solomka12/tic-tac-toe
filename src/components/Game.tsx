@@ -1,18 +1,15 @@
-// Migrated Game.js to TypeScript
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { set } from 'lodash-es';
-
-import { useAppState } from '@/contexts/AppStateContext';
+import useGameConfigStore from '@/state/gameConfigStore';
 import { getWinnerRow, fireConfetti } from '@/utils';
 import { PlayerSign } from '@/constants';
-
 import Board from './Board';
 import StatusPanel from './StatusPanel';
 
 const initialScore = { [PlayerSign.X]: 0, [PlayerSign.O]: 0 };
 
 const Game: React.FC = () => {
-  const { boardSize, marksToWin, moveChangeVariant } = useAppState();
+  const { boardSize, marksToWin, moveChangeVariant } = useGameConfigStore();
   const [board, setBoard] = useState<(PlayerSign | null)[]>([]);
   const [winnerRow, setWinnerRow] = useState<number[] | null>(null);
   const [winnerSign, setWinnerSign] = useState<PlayerSign | 'draw' | null>(null);
