@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { set } from 'lodash-es';
 import useGameConfigStore from '@/state/gameConfigStore';
 import { getWinnerRow, fireConfetti } from '@/utils';
@@ -8,6 +8,8 @@ import StatusPanel from './StatusPanel';
 
 const initialScore = { [PlayerSign.X]: 0, [PlayerSign.O]: 0 };
 
+const initialTimers = { [PlayerSign.X]: 600, [PlayerSign.O]: 600 }; // 10 minutes in seconds
+
 const Game: React.FC = () => {
   const { boardSize, marksToWin, moveChangeVariant } = useGameConfigStore();
   const [board, setBoard] = useState<(PlayerSign | null)[]>([]);
@@ -16,10 +18,36 @@ const Game: React.FC = () => {
   const [currentPlayer, setCurrentPlayer] = useState<PlayerSign | null>(null);
   const [startPlayerSign, setStartPlayerSign] = useState<PlayerSign>(moveChangeVariant === 2 ? PlayerSign.O : PlayerSign.X);
   const [score, setScore] = useState(initialScore);
+  const [timers, setTimers] = useState(initialTimers);
 
   useEffect(() => {
     reset();
   }, []);
+
+  useEffect(() => {
+    if (winnerSign && winnerSign !== 'draw') {
+      setScore((prev) => ({ ...prev, [winnerSign]: prev[winnerSign] + 1 }));
+    }
+  }, [winnerSign]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentPlayer && !winnerSign) {
+        setTimers((prev) => {
+          const updatedTimers = { ...prev, [currentPlayer]: Math.max(prev[currentPlayer] - 1, 0) };
+
+          if (updatedTimers[currentPlayer] === 0) {
+            const opponent = currentPlayer === PlayerSign.X ? PlayerSign.O : PlayerSign.X;
+            setWinnerSign(opponent);
+          }
+
+          return updatedTimers;
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentPlayer, winnerSign]);
 
   useEffect(() => {
     const row = getWinnerRow(board, boardSize, marksToWin);
@@ -30,8 +58,7 @@ const Game: React.FC = () => {
     if (winnerRow) {
       if (winnerRow.length) {
         const sign = board[winnerRow[0]];
-        setWinnerSign(sign);
-        setScore((prev) => ({ ...prev, [sign!]: prev[sign!] + 1 }));
+        setWinnerSign(sign!);
         fireConfetti(120, { y: 0.8, x: 1 });
         fireConfetti(60, { y: 0.8, x: 0 });
       } else {
@@ -47,10 +74,12 @@ const Game: React.FC = () => {
     setBoard(new Array(boardSize * boardSize).fill(null));
     setWinnerRow(null);
     setWinnerSign(null);
+    setTimers(initialTimers);
   };
 
   const handleCellSet = (index: number) => {
     setBoard((prevBoard) => [...set(prevBoard, index, currentPlayer)]);
+    setTimers((prev) => ({ ...prev, [currentPlayer!]: prev[currentPlayer!] + 5 }));
     togglePlayer();
   };
 
@@ -74,11 +103,17 @@ const Game: React.FC = () => {
 
   return (
     <div className="game">
-      <StatusPanel score={score} currentPlayer={currentPlayer} winnerSign={winnerSign} />
+      <StatusPanel
+        score={score}
+        currentPlayer={currentPlayer}
+        winnerSign={winnerSign}
+        playerTimers={timers}
+      />
 
       <Board
         cells={board}
         boardSize={boardSize}
+        ended={!!winnerSign}
         winnerRow={winnerRow}
         handleCellSet={handleCellSet}
         reset={reset}

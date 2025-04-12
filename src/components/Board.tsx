@@ -12,11 +12,12 @@ interface BoardProps {
   cells: (string | null)[];
   handleCellSet: (index: number) => void;
   boardSize: number;
+  ended?: boolean;
   winnerRow: number[] | null;
   reset: () => void;
 }
 
-const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, winnerRow, reset }) => {
+const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, winnerRow, reset }) => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, winnerRo
   const getBoardIndex = (rowIndex: number, cellIndex: number) => rowIndex * boardSize + cellIndex;
 
   return (
-    <div className={cn('board-wrapper', { ended: Boolean(winnerRow) })}>
+    <div className={cn('board-wrapper', { ended })}>
       <div className="reset-block" onClick={reset}>
         <span className="win-caption">Click to play</span>
       </div>
