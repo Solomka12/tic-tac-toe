@@ -1,15 +1,11 @@
-import React from "react";
-
+import { useAppState } from './contexts/AppStateContext';
 import Game from './components/Game';
 import Menu from './components/Menu';
-
-import {useAppState} from './contexts/AppStateContext';
-
-import './App.scss';
+import './App.scss'
 
 function App() {
   const {isStarted} = useAppState();
   return isStarted ? <Game/> : <Menu />;
 }
 
-export default App;
+export default App
