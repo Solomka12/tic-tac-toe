@@ -1,8 +1,10 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { set } from 'lodash-es';
+import { GameMode, PlayerSign } from "@/types";
 import useGameConfigStore from '@/state/gameConfigStore';
-import { getWinnerRow, fireConfetti } from '@/utils';
-import { PlayerSign } from '@/constants';
+import { getWinnerRow } from '@/utils/game.utils';
+import { fireConfetti } from '@/utils/confetti.utils';
+import { getAIMove } from '@/utils/ai';
 import Board from './Board';
 import StatusPanel from './StatusPanel';
 
@@ -11,7 +13,7 @@ const initialScore = { [PlayerSign.X]: 0, [PlayerSign.O]: 0 };
 const initialTimers = { [PlayerSign.X]: 600, [PlayerSign.O]: 600 }; // 10 minutes in seconds
 
 const Game: React.FC = () => {
-  const { boardSize, marksToWin, moveChangeVariant } = useGameConfigStore();
+  const { boardSize, marksToWin, moveChangeVariant, gameMode, difficulty } = useGameConfigStore();
   const [board, setBoard] = useState<(PlayerSign | null)[]>([]);
   const [winnerRow, setWinnerRow] = useState<number[] | null>(null);
   const [winnerSign, setWinnerSign] = useState<PlayerSign | 'draw' | null>(null);
@@ -19,15 +21,21 @@ const Game: React.FC = () => {
   const [startPlayerSign, setStartPlayerSign] = useState<PlayerSign>(moveChangeVariant === 2 ? PlayerSign.O : PlayerSign.X);
   const [score, setScore] = useState(initialScore);
   const [timers, setTimers] = useState(initialTimers);
+  const [isAiThinking, setIsAiThinking] = useState(false);
+  const [roundKey, setRoundKey] = useState(0);
+  const gameOverRef = useRef(false);
+  const isAiTurn = gameMode === GameMode.Ai && currentPlayer === PlayerSign.O; // TODO: Make User select sign
 
   useEffect(() => {
     reset();
   }, []);
 
   useEffect(() => {
-    if (winnerSign && winnerSign !== 'draw') {
-      setScore((prev) => ({ ...prev, [winnerSign]: prev[winnerSign] + 1 }));
-    }
+    if (!winnerSign) return;
+    gameOverRef.current = true;
+    setIsAiThinking(false);
+    if (winnerSign !== 'draw') setScore((prev) => ({ ...prev, [winnerSign]: prev[winnerSign] + 1 }));
+    switchFirstPlayer();
   }, [winnerSign]);
 
   useEffect(() => {
@@ -64,20 +72,39 @@ const Game: React.FC = () => {
       } else {
         setWinnerSign('draw');
       }
-
-      switchFirstPlayer();
     }
   }, [winnerRow]);
 
+  useEffect(() => {
+    if (isAiTurn && !winnerSign) {
+      setIsAiThinking(true);
+
+      getAIMove(board, boardSize, marksToWin, PlayerSign.O, difficulty).then((result) => {
+        // Discard the move if the game ended while we were computing
+        if (gameOverRef.current) return;
+
+        console.log(`AI move: cell ${result.move}, depth ${result.depthReached}, time ${result.searchTimeMs.toFixed(1)}ms`);
+        setIsAiThinking(false);
+        if (result.move >= 0) {
+          handleCellSet(result.move, true);
+        }
+      });
+    }
+  }, [isAiTurn, roundKey]);
+
   const reset = () => {
+    gameOverRef.current = false;
+    setRoundKey((k) => k + 1);
     setCurrentPlayer(startPlayerSign);
     setBoard(new Array(boardSize * boardSize).fill(null));
     setWinnerRow(null);
     setWinnerSign(null);
     setTimers(initialTimers);
+    setIsAiThinking(false);
   };
 
-  const handleCellSet = (index: number) => {
+  const handleCellSet = (index: number, isAgent?: boolean) => {
+    if (isAiTurn && !isAgent) return;
     setBoard((prevBoard) => [...set(prevBoard, index, currentPlayer)]);
     setTimers((prev) => ({ ...prev, [currentPlayer!]: prev[currentPlayer!] + 5 }));
     togglePlayer();
@@ -114,6 +141,8 @@ const Game: React.FC = () => {
         cells={board}
         boardSize={boardSize}
         ended={!!winnerSign}
+        isOpponentsMove={isAiTurn}
+        isAiThinking={isAiThinking}
         winnerRow={winnerRow}
         handleCellSet={handleCellSet}
         reset={reset}

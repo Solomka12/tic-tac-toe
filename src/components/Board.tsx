@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 import { throttle } from 'lodash-es';
 
-import { getSplitArr } from '@/utils';
-import { PlayerSign } from '@/constants';
+import { getSplitArr } from '@/utils/helpers';
+import { PlayerSign } from "@/types";
 
 import oIcon from '@/assets/icons/o_icon.svg';
 import xIcon from '@/assets/icons/x_icon.svg';
@@ -13,11 +13,13 @@ interface BoardProps {
   handleCellSet: (index: number) => void;
   boardSize: number;
   ended?: boolean;
+  isOpponentsMove?: boolean;
+  isAiThinking?: boolean;
   winnerRow: number[] | null;
   reset: () => void;
 }
 
-const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, winnerRow, reset }) => {
+const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, isOpponentsMove, isAiThinking, winnerRow, reset }) => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
   useEffect(() => {
@@ -83,10 +85,20 @@ const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, w
   const getBoardIndex = (rowIndex: number, cellIndex: number) => rowIndex * boardSize + cellIndex;
 
   return (
-    <div className={cn('board-wrapper', { ended })}>
+    <div className={cn('board-wrapper', { ended, 'opponents-move': isOpponentsMove })}>
       <div className="reset-block" onClick={reset}>
         <span className="win-caption">Click to play</span>
       </div>
+
+      {isAiThinking && (
+        <div className="ai-thinking-overlay">
+          <div className="ai-thinking-indicator">
+            <span className="thinking-dot" />
+            <span className="thinking-dot" />
+            <span className="thinking-dot" />
+          </div>
+        </div>
+      )}
 
       <table
         className="board"

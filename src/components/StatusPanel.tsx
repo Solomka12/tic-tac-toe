@@ -1,8 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
 
-import { PlayerSign } from '@/constants';
-import { formatTime } from '@/utils/date.utils';
+import { PlayerSign } from "@/types";
+import { formatTime } from '@/utils/helpers';
 
 import oIcon from '@/assets/icons/o_icon.svg';
 import xIcon from '@/assets/icons/x_icon.svg';
