@@ -16,6 +16,7 @@ const Game: React.FC = () => {
   const { boardSize, marksToWin, moveChangeVariant, gameMode, difficulty } = useGameConfigStore();
   const [board, setBoard] = useState<(PlayerSign | null)[]>([]);
   const [winnerRow, setWinnerRow] = useState<number[] | null>(null);
+  const [lastMove, setLastMove] = useState<number | null>(null);
   const [winnerSign, setWinnerSign] = useState<PlayerSign | 'draw' | null>(null);
   const [currentPlayer, setCurrentPlayer] = useState<PlayerSign | null>(null);
   const [startPlayerSign, setStartPlayerSign] = useState<PlayerSign>(moveChangeVariant === 2 ? PlayerSign.O : PlayerSign.X);
@@ -101,12 +102,14 @@ const Game: React.FC = () => {
     setWinnerSign(null);
     setTimers(initialTimers);
     setIsAiThinking(false);
+    setLastMove(null);
   };
 
   const handleCellSet = (index: number, isAgent?: boolean) => {
     if (isAiTurn && !isAgent) return;
     setBoard((prevBoard) => [...set(prevBoard, index, currentPlayer)]);
     setTimers((prev) => ({ ...prev, [currentPlayer!]: prev[currentPlayer!] + 5 }));
+    setLastMove(index);
     togglePlayer();
   };
 
@@ -144,6 +147,7 @@ const Game: React.FC = () => {
         isOpponentsMove={isAiTurn}
         isAiThinking={isAiThinking}
         winnerRow={winnerRow}
+        lastMove={lastMove}
         handleCellSet={handleCellSet}
         reset={reset}
       />

@@ -16,10 +16,11 @@ interface BoardProps {
   isOpponentsMove?: boolean;
   isAiThinking?: boolean;
   winnerRow: number[] | null;
+  lastMove: number | null;
   reset: () => void;
 }
 
-const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, isOpponentsMove, isAiThinking, winnerRow, reset }) => {
+const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, isOpponentsMove, isAiThinking, winnerRow, lastMove, reset }) => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, i
       hovered: index === hoveredCell,
       highlighted: Number.isInteger(hoveredCell) && (sameRow || sameColumn),
       victorious: winnerRow?.includes(index),
+      'last-move': index === lastMove,
     };
   };
 
