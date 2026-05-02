@@ -31,7 +31,7 @@ const Menu: React.FC = () => {
   return (
     <div className="menu">
       <div className="game-configs">
-        <div className="config-item">
+        <div className="config-item mb-2">
           <label className="config-item-label">Board size: {boardSize}</label>
           <Slider
               value={[boardSize]}
@@ -41,7 +41,7 @@ const Menu: React.FC = () => {
             />
         </div>
 
-        <div className="config-item">
+        <div className="config-item mb-2">
           <label className="config-item-label">Marks to win: {marksToWin}</label>
           <Slider
               value={[marksToWin]}
