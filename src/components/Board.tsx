@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import cn from 'classnames';
 import { throttle } from 'lodash-es';
 
@@ -23,17 +23,17 @@ interface BoardProps {
 const Board: React.FC<BoardProps> = ({ cells, handleCellSet, boardSize, ended, isOpponentsMove, isAiThinking, winnerRow, lastMove, reset }) => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (hoveredCell !== null) vibrate(15);
-  }, [hoveredCell]);
-
-  const vibrate = useCallback(
-    throttle((duration: number) => {
+  const vibrate = useMemo(
+    () => throttle((duration: number) => {
       navigator.vibrate(0);
       navigator.vibrate(duration);
     }, 100),
     []
   );
+
+  useEffect(() => {
+    if (hoveredCell !== null) vibrate(15);
+  }, [hoveredCell, vibrate]);
 
   const handleBoardClick = ({ target }: React.MouseEvent<HTMLTableElement>) => {
     const element = target as HTMLElement;
