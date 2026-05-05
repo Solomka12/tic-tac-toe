@@ -31,7 +31,7 @@ export const getWinnerRow = (
   const getHorizontalRow = (i: number, cell: string, board: (string | null)[]) => {
     if (!fitsHorizontally(i)) return null;
 
-    let currWinnerRow = [i];
+    const currWinnerRow = [i];
     let currRowCount = 1;
 
     for (let j = i + 1; currRowCount < marksToWin; j++) {
@@ -49,7 +49,7 @@ export const getWinnerRow = (
   const getVerticalRow = (i: number, cell: string, board: (string | null)[]) => {
     if (!fitsVertically(i)) return null;
 
-    let currWinnerRow = [i];
+    const currWinnerRow = [i];
     let currRowCount = 1;
 
     for (let j = i + boardSize; currRowCount < marksToWin; j += boardSize) {
@@ -67,7 +67,7 @@ export const getWinnerRow = (
   const getDiagonalLTRRow = (i: number, cell: string, board: (string | null)[]) => {
     if (!fitsHorizontally(i) || !fitsVertically(i)) return null;
 
-    let currWinnerRow = [i];
+    const currWinnerRow = [i];
     let currRowCount = 1;
 
     for (let j = i + boardSize + 1; currRowCount < marksToWin; j += boardSize + 1) {
@@ -85,7 +85,7 @@ export const getWinnerRow = (
   const getDiagonalRTLRow = (i: number, cell: string, board: (string | null)[]) => {
     if (!fitsVertically(i) || !fitsBackHorizontally(i)) return null;
 
-    let currWinnerRow = [i];
+    const currWinnerRow = [i];
     let currRowCount = 1;
 
     for (let j = i + boardSize - 1; currRowCount < marksToWin; j += boardSize - 1) {
